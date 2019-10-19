@@ -20,17 +20,15 @@ public class HelloFX extends Application {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("Hello World");
-
         launch(args);
 
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        URL url = getClass().getResource("view/board_view.fxml");
+        URL url = getClass().getResource("board_view.fxml");
         ResourceBundle rb = ResourceBundle
-                .getBundle("jakub.dev.games.message.board_view");
+                .getBundle("jakub.dev.games.saper.message.board_view");
         Parent root = FXMLLoader.load(url, rb);
         Scene scene = new Scene(root, 500, 400, Color.BLACK);
         stage.setScene(scene);
