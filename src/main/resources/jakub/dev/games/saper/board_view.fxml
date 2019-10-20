@@ -9,13 +9,18 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="jakub.dev.games.saper.BoardView"
-            prefHeight="400.0" prefWidth="600.0" fx:id="borderPane">
+            prefHeight="500.0" prefWidth="700.0" fx:id="borderPane">
 
     <top>
         <HBox>
             <children>
-                <Button fx:id="newGame" maxHeight="30" maxWidth="100" onAction="#newGame"/>
+                <Button fx:id="newGameA" maxHeight="30" maxWidth="150" onAction="#newGame" id="GameA" text="10x10 15 bombs"/>
+                <Button fx:id="newGameB" maxHeight="30" maxWidth="150" onAction="#newGame" id="GameB" text="20x20 50 bombs" />
 
+                <Button fx:id="newGameC" maxHeight="30" maxWidth="150" onAction="#newCustomGame" id="GameC" text="Custom"/>
+                <TextField fx:id="xB" maxHeight="30" maxWidth="60" promptText="x"/>
+                <TextField fx:id="yB" maxHeight="30" maxWidth="60" promptText="y"/>
+                <TextField fx:id="bombsB" maxHeight="30" maxWidth="80" promptText="bombs"/>
             </children>
         </HBox>
     </top>

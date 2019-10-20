@@ -1,9 +1,14 @@
 package jakub.dev.games.saper.nodes;
 
+import jakub.dev.games.saper.BoardView;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ButtonUtils {
 
@@ -18,7 +23,7 @@ public class ButtonUtils {
     }
 
 
-    public static List<SquareButton> squareButtonList(int x, int y, int numberOfBombs) {
+    public static List<SquareButton> squareButtonList(int x, int y, int numberOfBombs, BoardView controller) {
 
         List<SquareButton> squareButtons = new ArrayList<>();
 
@@ -32,15 +37,18 @@ public class ButtonUtils {
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
                 boolean hasBomb = bombsCoordinatesSet.contains(new Coordinates(i, j));
-                squareButtons.add(new SquareButton(i, j, hasBomb));
+                squareButtons.add(new SquareButton(i, j, hasBomb, squareButtons, controller));
             }
         }
+
         return squareButtons;
     }
 
-    List<SquareButton> neighbourButtons(SquareButton button) {
-        return null;
-    }
+
+
+
+
+
 }
 
 class Coordinates {
