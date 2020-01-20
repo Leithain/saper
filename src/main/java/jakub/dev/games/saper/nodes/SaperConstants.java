@@ -1,5 +1,6 @@
 package jakub.dev.games.saper.nodes;
 
+import jakub.dev.games.saper.BoardView;
 import javafx.scene.control.Button;
 
 import java.util.HashMap;
@@ -18,8 +19,6 @@ public class SaperConstants {
     public static final int prefButtonSize = 30;
     public static final int minButtonSize = 20;
     public static final int maxButtonSize = 35;
-
-
 
 
 

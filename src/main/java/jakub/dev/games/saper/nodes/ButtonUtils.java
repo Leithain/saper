@@ -27,26 +27,53 @@ public class ButtonUtils {
 
         List<SquareButton> squareButtons = new ArrayList<>();
 
+        assignBombs(x, y, numberOfBombs, controller, squareButtons);
+
+        return squareButtons;
+    }
+
+    private static void assignBombs(int x, int y, int numberOfBombs, BoardView controller, List<SquareButton> squareButtons) {
+
+        Set<Coordinates> bombsCoordinatesSet = randomizeBombs(x, y, numberOfBombs);
+
+        squareButtons.forEach(b -> b.setHasBomb(false));
+
+        createList(x, y, controller, squareButtons, bombsCoordinatesSet);
+    }
+
+    private static Set<Coordinates> randomizeBombs(int x, int y, int numberOfBombs) {
+
         Random random = new Random();
 
         Set<Coordinates> bombsCoordinatesSet = new HashSet<>();
         while (bombsCoordinatesSet.size() < numberOfBombs){
             bombsCoordinatesSet.add(new Coordinates(random.nextInt(x), random.nextInt(y)));
         }
+        return bombsCoordinatesSet;
+    }
 
+    private static void createList(int x, int y, BoardView controller, List<SquareButton> squareButtons, Set<Coordinates> bombsCoordinatesSet) {
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
                 boolean hasBomb = bombsCoordinatesSet.contains(new Coordinates(i, j));
                 squareButtons.add(new SquareButton(i, j, hasBomb, squareButtons, controller));
             }
         }
-
-        return squareButtons;
     }
 
+    public static void assignBombs(List<SquareButton> squareButtons, int numberOfBombs){
 
+        int x = squareButtons.stream().mapToInt(SquareButton::getPositionX).max().getAsInt();
+        int y = squareButtons.stream().mapToInt(SquareButton::getPositionY).max().getAsInt();
 
-
+        Set<Coordinates> bombsCoordinatesSet = randomizeBombs(x,y, numberOfBombs);
+        for (SquareButton squareButton : squareButtons) {
+            boolean bomb = bombsCoordinatesSet.contains(
+                    new Coordinates(squareButton.getPositionX(), squareButton.getPositionY()));
+            squareButton.setHasBomb(bomb);
+        }
+        System.out.println("assigned");
+    }
 
 
 }
@@ -68,10 +95,14 @@ class Coordinates {
         Coordinates that = (Coordinates) o;
         return x == that.x &&
                 y == that.y;
+
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
+
+
 }

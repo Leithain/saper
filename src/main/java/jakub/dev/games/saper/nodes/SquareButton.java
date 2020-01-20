@@ -21,6 +21,7 @@ public class SquareButton extends Button {
     private boolean hasBomb;
 
     private boolean open = false;
+    private boolean flagged = false;
 
     private List<SquareButton> parentList;
     private BoardView controler;
@@ -58,9 +59,6 @@ public class SquareButton extends Button {
         this.parentList = parentList;
         this.controler = controller;
 
-
-//        this.setText(hasBomb ? "B" : "");
-
         this.setMinSize(SaperConstants.minButtonSize, SaperConstants.minButtonSize);
         this.setMaxSize(SaperConstants.maxButtonSize, SaperConstants.maxButtonSize);
         this.setPrefSize(SaperConstants.prefButtonSize, SaperConstants.prefButtonSize);
@@ -80,18 +78,29 @@ public class SquareButton extends Button {
     public void flag(MouseEvent event) {
         this.setStyle(SaperConstants.flagedButtonStyle);
         this.setOnMouseClicked(this::unFlag);
+        this.flagged = true;
     }
 
     public void unFlag(MouseEvent event) {
-        this.setStyle(SaperConstants.normalButtonStyle);
-        this.setOnMouseClicked(this::click);
+
+        if (event.getButton().equals(MouseButton.SECONDARY)) {
+            this.setStyle(SaperConstants.normalButtonStyle);
+            this.setOnMouseClicked(this::click);
+            this.flagged = false;
+        }
     }
 
     public void pop(MouseEvent event) {
         if (this.hasBomb) {
-            this.setText("X");
-            this.setStyle(SaperConstants.boomButtonStyle);
-            controler.lose();
+            if (this.firstMove()){
+                ButtonUtils.assignBombs(parentList, controler.getBombs());
+                this.pop(event);
+            } else {
+                this.setText("X");
+                this.setStyle(SaperConstants.boomButtonStyle);
+                controler.lose();
+            }
+
         } else {
             this.printNumberOfBombsAround();
             this.open = true;
@@ -101,11 +110,18 @@ public class SquareButton extends Button {
                 }
             }
             this.setStyle(SaperConstants.clickedButtonStyle);
-            this.setOnMouseClicked(null);
-            if (event != null){
+            this.setOnMouseClicked(this::popSpecial);
+            if (event != null) {
                 this.checkWinCondition();
             }
         }
+    }
+
+    public void popSpecial(MouseEvent event) {
+        for (SquareButton neighbourButton : this.getNeighbourButtons()) {
+            if (!neighbourButton.open && !neighbourButton.flagged) neighbourButton.pop(null);
+        }
+        this.checkWinCondition();
     }
 
     public void checkWinCondition() {
@@ -116,6 +132,12 @@ public class SquareButton extends Button {
             controler.win();
         }
         System.out.println(toGo);
+    }
+
+    public boolean firstMove() {
+        return this.parentList.stream()
+                .filter((SquareButton sq) -> sq.open)
+                .count() == 0;
     }
 
     public int getNumberOfBombsAround() {

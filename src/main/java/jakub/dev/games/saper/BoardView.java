@@ -45,9 +45,13 @@ public class BoardView implements Initializable {
             "GameB", new int[]{20, 20, 50}
     );
 
-    int x;
-    int y;
-    int bombs;
+    private int x;
+    private int y;
+    private int bombs;
+
+    public int getBombs() {
+        return bombs;
+    }
 
     private GridPane gridPane;
 
@@ -80,6 +84,10 @@ public class BoardView implements Initializable {
         }
 
         startGame(x, y, bombs);
+
+    }
+
+    public void reset(){
 
     }
 
@@ -117,7 +125,6 @@ public class BoardView implements Initializable {
         }
     }
 
-
     public void newCustomGame(ActionEvent event) {
 
         try {
@@ -132,4 +139,5 @@ public class BoardView implements Initializable {
             alert.show();
         }
     }
+
 }
